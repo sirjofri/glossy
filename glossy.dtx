@@ -1,0 +1,103 @@
+% \iffalse meta-comment
+% vim:et:ts=3:sw=3:
+%
+% Copyright (C) 2018 by Joel Fridolin Meyer <joel@sirjofri.de>
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{glossy.dtx}
+%</driver>
+%<glossy>\NeedsTeXFormat{LaTeX2e}[2003/12/01]
+%<glossy>\ProvidesPackage{glossy}
+%<*glossy>
+	[2018/11/24 v0.1 glossy package]
+%</glossy>
+%<glossy>\RequirePackage{minibox}
+%<*driver>
+\documentclass{ltxdoc}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+	\DocInput{glossy.dtx}
+	\PrintChanges
+	\PrintIndex
+\end{document}
+%</driver>
+% \fi
+% \CheckSum{0}
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+% \changes{v0.1}{2018/11/24}{Initial version}
+%
+% \GetFileInfo{glossy.dtx}
+%
+% \DoNotIndex{\newcommand,\renewcommand}
+%
+% \title{The \textsf{glossy} package\thanks{This document corresponds to
+% \textsf{glossy}~\fileversion, dated \filedate.}}
+% \author{Joel Fridolin Meyer \\ \texttt{joel@sirjofri.de}}
+%
+% \maketitle
+%
+% \section{Implementation}
+%
+\makeatletter
+%
+% \subsection{Gloss Format}
+%
+% Let's first set the default styles of our three glosses and also provide
+% some helper functions to redefine those:
+%    \begin{macrocode}
+\newcommand*{\gs@firstStyle}{}
+\newcommand*{\gs@secondStyle}{}
+\newcommand*{\gs@thirdStyle}{}
+\newcommand*{\gsSetFirstStyle}[1]{\renewcommand\gs@firstStyle{#1}}
+\newcommand*{\gsSetSecondStyle}[1]{\renewcommand\gs@secondStyle{#1}}
+\newcommand*{\gsSetThirdStyle}[1]{\renewcommand\gs@thirdStyle{#1}}
+%    \end{macrocode}
+%
+% Next we define the default style of the verse number and a helper function.
+% It basically behaves like the other formatting macros.
+%    \begin{macrocode}
+\newcommand*{\gs@verse}{\bfseries}
+\newcommand*{\gsSetVerseStyle}[1]{\renewcommand\gs@verse{#1}}
+%    \end{macrocode}
+%
+% \subsection{The Glossy Environment}
+%
+% The |glossy| environment...
+%    \begin{macrocode}
+\newenvironment{glossy}{%
+   \newcommand*{\gloss}[3]{\minibox{%
+      \hss{\gs@firstStyle{##1}}\hss \\%
+      \hss{\gs@secondStyle{##2}}\hss \\%
+      \hss{\gs@thirdStyle{##3}}\hss }}%
+   \newcommand*{\gsVerse}[1]{\minibox{%
+      {\gs@verse{##1}}\\{}\\{}%
+     }}%
+   \parskip 20pt
+   \lineskip 10pt
+   \begin{sloppypar}
+}{%
+   \end{sloppypar}
+}
+%    \end{macrocode}
+%
+\makeatother
