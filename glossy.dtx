@@ -56,6 +56,36 @@
 %
 % \maketitle
 %
+% \begin{abstract}
+% The |glossy| package\ldots
+% \end{abstract}
+%
+% \tableofcontents
+%
+% \section{Introduction}
+%
+% \section{Usage}
+%
+% \DescribeMacro{\gsSetFirstStyle}
+% \DescribeMacro{\gsSetSecondStyle}
+% \DescribeMacro{\gsSetThirdStyle}
+% These macros set the style for the individual glosses. Those styles are
+% automatically used by the |\gloss| macro.
+%
+% \DescribeMacro{\gsSetVerseStyle}
+% The macro |\gsSetVerseStyle| sets the style of the verse-rated glosses.
+% Verse-rated glosses are those defined by the |\gsVerse| macro.
+%
+% \subsection{The Glossy Environment}
+%
+% \DescribeEnv{glossy}
+% The |glossy| environment...
+%
+% \DescribeMacro{\gloss}
+% \DescribeMacro{\gsVerse}
+%
+% \StopEventually{}
+%
 % \section{Implementation}
 %
 \makeatletter
@@ -82,7 +112,10 @@
 %
 % \subsection{The Glossy Environment}
 %
-% The |glossy| environment...
+% \begin{environment}{glossy}
+% The |glossy| environment first defines the |\gloss| and |\gsVerse| macros
+% and some default paragraph parameters. Then it opens a |sloppypar| to
+% produce nicer paragraphs.
 %    \begin{macrocode}
 \newenvironment{glossy}{%
    \newcommand*{\gloss}[3]{\minibox{%
@@ -99,5 +132,6 @@
    \end{sloppypar}
 }
 %    \end{macrocode}
+% \end{environment}
 %
 \makeatother
