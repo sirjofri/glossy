@@ -17,6 +17,7 @@
 %<glossy>\RequirePackage{minibox}
 %<*driver>
 \documentclass{ltxdoc}
+\usepackage{glossy}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -95,6 +96,26 @@
 %
 % \DescribeMacro{\gsO}
 % Use this inside your gloss block to typeset reading order marks.
+%
+% \section{Example}
+%
+% The following example was produced with this package:
+%
+%    \begin{macrocode}
+% \begin{glossy}
+%    \gsVBox{1}{Hello}{1}{Hallo}
+%    \gloss{and}{2}{und}
+%    \gloss{good}{3}{guten}
+%    \gloss{morning.}{4}{Morgen.}
+% \end{glossy}
+%    \end{macrocode}
+%
+% \begin{glossy}
+%    \gsVBox{1}{Hello}{1}{Hallo}
+%    \gloss{and}{2}{und}
+%    \gloss{good}{3}{guten}
+%    \gloss{morning.}{4}{Morgen.}
+% \end{glossy}
 %
 % \StopEventually{}
 %
