@@ -13,5 +13,5 @@ clean:
 	glossy.glo \
 	glossy.idx \
 	glossy.log \
-	glossy.pdf \
-	glossy.sty
+	glossy.sty \
+	glossy.toc
