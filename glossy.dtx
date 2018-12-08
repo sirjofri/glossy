@@ -12,7 +12,7 @@
 %<glossy>\NeedsTeXFormat{LaTeX2e}[2003/12/01]
 %<glossy>\ProvidesPackage{glossy}
 %<*glossy>
-	[2018/11/24 v0.1 glossy package]
+   [2018/11/24 v0.1 glossy package]
 %</glossy>
 %<glossy>\RequirePackage{minibox}
 %<*driver>
@@ -21,13 +21,14 @@
 \CodelineIndex
 \RecordChanges
 \begin{document}
-	\DocInput{glossy.dtx}
-	\PrintChanges
-	\PrintIndex
+   \DocInput{glossy.dtx}
+   \PrintChanges
+   \PrintIndex
 \end{document}
 %</driver>
 % \fi
 % \CheckSum{0}
+%
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -82,7 +83,18 @@
 % The |glossy| environment...
 %
 % \DescribeMacro{\gloss}
+% This macro uses three parameters to typeset a gloss block.
+%
 % \DescribeMacro{\gsVerse}
+% Use the |\gsVerse| macro to typeset a verse number only. It is \emph{not}
+% recommended to directly use this, use |\gsVBox| instead!
+%
+% \DescribeMacro{\gsVBox}
+% |\gsVBox| uses it's four parameters to typeset a verse block next to a
+% normal gloss block. It prevents a line break between those two gloss blocks.
+%
+% \DescribeMacro{\gsO}
+% Use this inside your gloss block to typeset reading order marks.
 %
 % \StopEventually{}
 %
@@ -112,9 +124,9 @@
 %
 % \subsection{The Glossy Environment}
 %
-% \begin{environment}{glossy}
-% The |glossy| environment first defines the |\gloss| and |\gsVerse| macros
-% and some default paragraph parameters. Then it opens a |sloppypar| to
+% \begin{environment}{glossy} The |glossy| environment first defines the
+% |\gloss| and |\gsVerse| macros as well as |\gsVBox| and |\gsO| and
+% some default paragraph parameters. Then it opens a |sloppypar| to
 % produce nicer paragraphs.
 %    \begin{macrocode}
 \newenvironment{glossy}{%
@@ -124,7 +136,9 @@
       \hss{\gs@thirdStyle{##3}}\hss }}%
    \newcommand*{\gsVerse}[1]{\minibox{%
       {\gs@verse{##1}}\\{}\\{}%
-     }}%
+   }}%
+   \newcommand*{\gsVBox}[4]{\mbox{\gsVerse{##1}~\gloss{##2}{##3}{##4}}}
+   \newcommand*{\gsO}[1]{\textsuperscript{##1}}%
    \parskip 20pt
    \lineskip 10pt
    \begin{sloppypar}
