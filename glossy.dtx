@@ -1,7 +1,7 @@
 % \iffalse meta-comment
 % vim:et:ts=3:sw=3:
 %
-% Copyright (C) 2018 by Joel Fridolin Meyer <joel@sirjofri.de>
+% Copyright (C) 2019 by Joel Fridolin Meyer <joel@sirjofri.de>
 %
 % \fi
 %
@@ -12,7 +12,7 @@
 %<glossy>\NeedsTeXFormat{LaTeX2e}[2003/12/01]
 %<glossy>\ProvidesPackage{glossy}
 %<*glossy>
-   [2018/11/24 v0.1 glossy package]
+   [2019/03/10 v0.2 glossy package]
 %</glossy>
 %<glossy>\RequirePackage{minibox}
 %<*driver>
@@ -47,10 +47,11 @@
 %   Right brace   \}     Tilde         \~}
 %
 % \changes{v0.1}{2018/11/24}{Initial version}
+% \changes{v0.2}{2019/03/10}{Adds customizable order mark}
 %
 % \GetFileInfo{glossy.dtx}
 %
-% \DoNotIndex{\newcommand,\renewcommand}
+% \DoNotIndex{\newcommand,\renewcommand,\begin,\end,\parskip,\bfseries,\lineskip,\newenvironment,\textsuperscript,\\,\hss}
 %
 % \title{The \textsf{glossy} package\thanks{This document corresponds to
 % \textsf{glossy}~\fileversion, dated \filedate.}}
@@ -59,12 +60,28 @@
 % \maketitle
 %
 % \begin{abstract}
-% The |glossy| package\ldots
+% The |glossy| package provides a simple solution for interlinear glosses.
+% It's strength is typesetting glosses over multiple lines \emph{and} pages.
+% If you need more advanced features look into other
+% packages\footnote{E.\,g.~\texttt{expex}
+% (\texttt{https://www.ctan.org/pkg/expex}).}.
 % \end{abstract}
 %
 % \tableofcontents
 %
 % \section{Introduction}
+%
+% There are different packages for linguistic purposes. Especially there is
+% |expex| with its great interlinear glosses features. But try typesetting
+% longer texts with it, especially with page breaks. You will find yourself at
+% some limits.
+%
+% The |glossy| package provides a simple solution for those interlinear
+% glosses across multiple pages. I use it to typeset an interlinear version of
+% the new testament, these are \emph{many} pages!
+%
+% A gloss word is set into a box. These words are like actual words in a line,
+% so there is no problem with line breaks and page breaks.
 %
 % \section{Usage}
 %
@@ -72,7 +89,8 @@
 % \DescribeMacro{\gsSetSecondStyle}
 % \DescribeMacro{\gsSetThirdStyle}
 % These macros set the style for the individual glosses. Those styles are
-% automatically used by the |\gloss| macro.
+% automatically used by the |\gloss| macro. See ``Implementation'' for more
+% information on how this is used.
 %
 % \DescribeMacro{\gsSetVerseStyle}
 % The macro |\gsSetVerseStyle| sets the style of the verse-rated glosses.
@@ -81,7 +99,8 @@
 % \subsection{The Glossy Environment}
 %
 % \DescribeEnv{glossy}
-% The |glossy| environment...
+% The |glossy| environment provides the macros needed for typesetting the
+% glosses. The following macros exist \emph{only} inside this environment!
 %
 % \DescribeMacro{\gloss}
 % This macro uses three parameters to typeset a gloss block.
@@ -95,7 +114,11 @@
 % normal gloss block. It prevents a line break between those two gloss blocks.
 %
 % \DescribeMacro{\gsO}
-% Use this inside your gloss block to typeset reading order marks.
+% Use this inside your gloss block to typeset reading order marks. The default
+% is superscripting the parameter. You can redefine it like the following:
+%    \begin{macrocode}
+% \renewcommand*{\gsO}[1]{\textsuperscript{#1}}
+%    \end{macrocode}
 %
 % \section{Example}
 %
@@ -103,19 +126,24 @@
 %
 %    \begin{macrocode}
 % \begin{glossy}
-%    \gsVBox{1}{Hello}{1}{Hallo}
-%    \gloss{and}{2}{und}
-%    \gloss{good}{3}{guten}
-%    \gloss{morning.}{4}{Morgen.}
+%    \gsVBox{1}{Hello}{1}{\gsO{1}Hallo}
+%    \gloss{and}{2}{\gsO{2}und}
+%    \gloss{good}{3}{\gsO{3}guten}
+%    \gloss{morning.}{4}{\gsO{4}Morgen.}
 % \end{glossy}
 %    \end{macrocode}
 %
 % \begin{glossy}
-%    \gsVBox{1}{Hello}{1}{Hallo}
-%    \gloss{and}{2}{und}
-%    \gloss{good}{3}{guten}
-%    \gloss{morning.}{4}{Morgen.}
+%    \gsVBox{1}{Hello}{1}{\gsO{1}Hallo}
+%    \gloss{and}{2}{\gsO{2}und}
+%    \gloss{good}{3}{\gsO{3}guten}
+%    \gloss{morning.}{4}{\gsO{4}Morgen.}
 % \end{glossy}
+%
+% \section{Footnotes}
+%
+% You can create footnotes with the common macros |\footnotemark| and
+% |\footnotetext|. You can find many resources for these macros online.
 %
 % \StopEventually{}
 %
@@ -134,6 +162,12 @@
 \newcommand*{\gsSetFirstStyle}[1]{\renewcommand\gs@firstStyle{#1}}
 \newcommand*{\gsSetSecondStyle}[1]{\renewcommand\gs@secondStyle{#1}}
 \newcommand*{\gsSetThirdStyle}[1]{\renewcommand\gs@thirdStyle{#1}}
+%    \end{macrocode}
+%
+% The |\gsO| macro is a special case: It's defined directly. You can simply
+% renew it.
+%    \begin{macrocode}
+\newcommand*{\gsO}[1]{\textsuperscript{#1}}%
 %    \end{macrocode}
 %
 % Next we define the default style of the verse number and a helper function.
@@ -159,7 +193,6 @@
       {\gs@verse{##1}}\\{}\\{}%
    }}%
    \newcommand*{\gsVBox}[4]{\mbox{\gsVerse{##1}~\gloss{##2}{##3}{##4}}}
-   \newcommand*{\gsO}[1]{\textsuperscript{##1}}%
    \parskip 20pt
    \lineskip 10pt
    \begin{sloppypar}

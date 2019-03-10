@@ -14,6 +14,8 @@ glossy.sty: glossy.ins glossy.dtx
 
 glossy.pdf: glossy.dtx
 	@pdflatex $<
+	@makeindex -s gglo.ist -o glossy.gls glossy.glo
+	@makeindex -s gind.ist -o glossy.ind glossy.idx
 	@pdflatex $<
 	@echo " → Documentation created"
 
