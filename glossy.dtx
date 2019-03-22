@@ -12,7 +12,7 @@
 %<glossy>\NeedsTeXFormat{LaTeX2e}[2003/12/01]
 %<glossy>\ProvidesPackage{glossy}
 %<*glossy>
-   [2019/03/10 v0.2 glossy package]
+   [2019/03/22 v0.3 glossy package]
 %</glossy>
 %<glossy>\RequirePackage{minibox}
 %<*driver>
@@ -48,6 +48,7 @@
 %
 % \changes{v0.1}{2018/11/24}{Initial version}
 % \changes{v0.2}{2019/03/10}{Adds customizable order mark}
+% \changes{v0.3}{2019/03/22}{Adjusts default paragraph layout}
 %
 % \GetFileInfo{glossy.dtx}
 %
@@ -194,6 +195,7 @@
    }}%
    \newcommand*{\gsVBox}[4]{\mbox{\gsVerse{##1}~\gloss{##2}{##3}{##4}}}
    \lineskip 10pt
+   \parindent 1cm
    \begin{sloppypar}
 }{%
    \end{sloppypar}
