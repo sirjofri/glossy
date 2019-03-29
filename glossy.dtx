@@ -1,5 +1,5 @@
 % \iffalse meta-comment
-% vim:et:ts=3:sw=3:
+% vim:et:ts=3:sw=3:foldmethod=manual
 %
 % Copyright (C) 2019 by Joel Fridolin Meyer <joel@sirjofri.de>
 %
@@ -14,7 +14,6 @@
 %<*glossy>
    [2019/03/22 v0.3 glossy package]
 %</glossy>
-%<glossy>\RequirePackage{minibox}
 %<*driver>
 \documentclass{ltxdoc}
 \usepackage{glossy}
@@ -52,7 +51,7 @@
 %
 % \GetFileInfo{glossy.dtx}
 %
-% \DoNotIndex{\newcommand,\renewcommand,\begin,\end,\parskip,\bfseries,\lineskip,\newenvironment,\textsuperscript,\\,\hss}
+% \DoNotIndex{\newcommand,\renewcommand,\begin,\end,\parskip,\bfseries,\lineskip,\newenvironment,\textsuperscript,\\,\hss,\setlength,\newlength,\tabcolsep,\rule,\mbox,\parindent}
 %
 % \title{The \textsf{glossy} package\thanks{This document corresponds to
 % \textsf{glossy}~\fileversion, dated \filedate.}}
@@ -96,6 +95,15 @@
 % \DescribeMacro{\gsSetVerseStyle}
 % The macro |\gsSetVerseStyle| sets the style of the verse-rated glosses.
 % Verse-rated glosses are those defined by the |\gsVerse| macro.
+%
+% \DescribeMacro{\gsFirstHeight}
+% \DescribeMacro{\gsSecondHeight}
+% \DescribeMacro{\gsThirdHeight}
+%
+% These macros define the minimum height for the languages. You can use them
+% to make your paragraphs look well aligned on twosided documents. To find out
+% the values that fit your setup best, start with the font size your are
+% using.
 %
 % \subsection{The Glossy Environment}
 %
@@ -154,7 +162,7 @@
 %
 % \subsection{Gloss Format}
 %
-% Let's first set the default styles of our three glosses and also provide
+% Let's first set the default styles of our three words and also provide
 % some helper functions to redefine those:
 %    \begin{macrocode}
 \newcommand*{\gs@firstStyle}{}
@@ -163,6 +171,19 @@
 \newcommand*{\gsSetFirstStyle}[1]{\renewcommand\gs@firstStyle{#1}}
 \newcommand*{\gsSetSecondStyle}[1]{\renewcommand\gs@secondStyle{#1}}
 \newcommand*{\gsSetThirdStyle}[1]{\renewcommand\gs@thirdStyle{#1}}
+%    \end{macrocode}
+%
+% Let's define some default heights for each language. The user can overwrite
+% these values.
+%
+%    \begin{macrocode}
+\newlength\gsFirstHeight
+\newlength\gsSecondHeight
+\newlength\gsThirdHeight
+
+\setlength\gsFirstHeight{10pt}
+\setlength\gsSecondHeight{10pt}
+\setlength\gsThirdHeight{10pt}
 %    \end{macrocode}
 %
 % The |\gsO| macro is a special case: It's defined directly. You can simply
@@ -186,16 +207,24 @@
 % produce nicer paragraphs.
 %    \begin{macrocode}
 \newenvironment{glossy}{%
-   \newcommand*{\gloss}[3]{\minibox{%
-      \hss{\gs@firstStyle{##1}}\hss \\%
-      \hss{\gs@secondStyle{##2}}\hss \\%
-      \hss{\gs@thirdStyle{##3}}\hss }}%
-   \newcommand*{\gsVerse}[1]{\minibox{%
-      {\gs@verse{##1}}\\{}\\{}%
-   }}%
+   \newcommand*{\gloss}[3]{%
+      \begin{tabular}{c}
+         {\gs@firstStyle{\rule{0pt}{\gsFirstHeight}##1}} \\%
+         {\gs@secondStyle{\rule{0pt}{\gsSecondHeight}##2}} \\%
+         {\gs@thirdStyle{\rule{0pt}{\gsThirdHeight}##3}} %
+      \end{tabular}%
+   }
+   \newcommand*{\gsVerse}[1]{%
+      \begin{tabular}{c}
+         {\gs@verse{\rule{0pt}{\gsFirstHeight}##1}} \\%
+         {\rule{0pt}{\gsSecondHeight}} \\%
+         {\rule{0pt}{\gsThirdHeight}}%
+      \end{tabular}%
+   }
    \newcommand*{\gsVBox}[4]{\mbox{\gsVerse{##1}~\gloss{##2}{##3}{##4}}}
    \lineskip 10pt
    \parindent 1cm
+   \setlength\tabcolsep{0pt}
    \begin{sloppypar}
 }{%
    \end{sloppypar}
