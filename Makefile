@@ -38,11 +38,5 @@ uninstall:
 	@echo " → Removed glossy package"
 
 clean:
-	-@rm \
-	glossy.aux \
-	glossy.glo \
-	glossy.idx \
-	glossy.log \
-	glossy.sty \
-	glossy.toc
+	-@rm `<.gitignore`
 	@echo " → Removed temp files"
