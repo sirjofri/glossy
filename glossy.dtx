@@ -1,7 +1,25 @@
 % \iffalse meta-comment
 % vim:et:ts=3:sw=3:foldmethod=manual
 %
-% Copyright (C) 2019 by Joel Fridolin Meyer <joel@sirjofri.de>
+% Copyright (C) 2019 Joel Fridolin Meyer (sirjofri)
+%
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be included in all
+% copies or substantial portions of the Software.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
 %
 % \fi
 %
@@ -12,7 +30,7 @@
 %<glossy>\NeedsTeXFormat{LaTeX2e}[2003/12/01]
 %<glossy>\ProvidesPackage{glossy}
 %<*glossy>
-   [2019/03/22 v0.3 glossy package]
+   [2019/03/29 v0.4 glossy package]
 %</glossy>
 %<*driver>
 \documentclass{ltxdoc}
@@ -48,6 +66,7 @@
 % \changes{v0.1}{2018/11/24}{Initial version}
 % \changes{v0.2}{2019/03/10}{Adds customizable order mark}
 % \changes{v0.3}{2019/03/22}{Adjusts default paragraph layout}
+% \changes{v0.4}{2019/03/29}{Removes package dependency, use tabular instead. Also adds license.}
 %
 % \GetFileInfo{glossy.dtx}
 %
@@ -154,6 +173,34 @@
 % You can create footnotes with the common macros |\footnotemark| and
 % |\footnotetext|. You can find many resources for these macros online.
 %
+% \section{License}
+%
+% \noindent Copyright \copyright\ 2019 Joel Fridolin Meyer (sirjofri)
+%
+% \vspace{1em}
+%
+% \noindent Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the ``Software''), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+%
+% \vspace{1em}
+%
+% \noindent The above copyright notice and this permission notice shall be included in all
+% copies or substantial portions of the Software.
+%
+% \vspace{1em}
+%
+% \noindent THE SOFTWARE IS PROVIDED ``AS IS'', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
+%
 % \StopEventually{}
 %
 % \section{Implementation}
@@ -162,6 +209,12 @@
 %
 % \subsection{Gloss Format}
 %
+% \begin{macro}{\gs@firstStyle}
+% \begin{macro}{\gs@secondStyle}
+% \begin{macro}{\gs@thirdStyle}
+% \begin{macro}{\gsSetFirstStyle}
+% \begin{macro}{\gsSetSecondStyle}
+% \begin{macro}{\gsSetThirdStyle}
 % Let's first set the default styles of our three words and also provide
 % some helper functions to redefine those:
 %    \begin{macrocode}
@@ -172,10 +225,19 @@
 \newcommand*{\gsSetSecondStyle}[1]{\renewcommand\gs@secondStyle{#1}}
 \newcommand*{\gsSetThirdStyle}[1]{\renewcommand\gs@thirdStyle{#1}}
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
 %
 % Let's define some default heights for each language. The user can overwrite
 % these values.
 %
+% \begin{macro}{\gsFirstHeight}
+% \begin{macro}{\gsSecondHeight}
+% \begin{macro}{\gsThirdHeight}
 %    \begin{macrocode}
 \newlength\gsFirstHeight
 \newlength\gsSecondHeight
@@ -185,26 +247,38 @@
 \setlength\gsSecondHeight{10pt}
 \setlength\gsThirdHeight{10pt}
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
 %
+% \begin{macro}{\gsO}
 % The |\gsO| macro is a special case: It's defined directly. You can simply
 % renew it.
 %    \begin{macrocode}
 \newcommand*{\gsO}[1]{\textsuperscript{#1}}%
 %    \end{macrocode}
+% \end{macro}
 %
+% \begin{macro}{\gs@verse}
+% \begin{macro}{\gsSetVerseStyle}
 % Next we define the default style of the verse number and a helper function.
 % It basically behaves like the other formatting macros.
 %    \begin{macrocode}
 \newcommand*{\gs@verse}{\bfseries}
 \newcommand*{\gsSetVerseStyle}[1]{\renewcommand\gs@verse{#1}}
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 %
 % \subsection{The Glossy Environment}
 %
-% \begin{environment}{glossy} The |glossy| environment first defines the
-% |\gloss| and |\gsVerse| macros as well as |\gsVBox| and |\gsO| and
-% some default paragraph parameters. Then it opens a |sloppypar| to
-% produce nicer paragraphs.
+% \begin{environment}{glossy}
+% \begin{macro}{\gloss}
+% \begin{macro}{\gsVerse}
+% \begin{macro}{\gsVBox}
+% The |glossy| environment first defines the |\gloss| and |\gsVerse| macros as
+% well as |\gsVBox| and |\gsO| and some default paragraph parameters. Then it
+% opens a |sloppypar| to produce nicer paragraphs.
 %    \begin{macrocode}
 \newenvironment{glossy}{%
    \newcommand*{\gloss}[3]{%
@@ -230,6 +304,9 @@
    \end{sloppypar}
 }
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
 % \end{environment}
 %
 \makeatother
